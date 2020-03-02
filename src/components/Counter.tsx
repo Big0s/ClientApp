@@ -3,11 +3,11 @@ import * as React from "react";
 export class Counter extends React.PureComponent<{}, { currentCount: number }> {
   public state = { currentCount: 0 };
 
-  incrementCounter() {
+  incrementCounter = () => {
     this.setState({
       currentCount: this.state.currentCount + 1
     });
-  }
+  };
 
   render() {
     return (

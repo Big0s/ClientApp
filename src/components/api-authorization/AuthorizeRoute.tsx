@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import { Route, Redirect } from "react-router-dom";
 import {
   ApplicationPaths,
@@ -36,13 +36,13 @@ export default class AuthorizeRoute extends React.PureComponent<
     if (!ready) {
       return <div></div>;
     } else {
-      const { component: Component, ...rest } = this.props;
+      const { component: RouteComponent, ...rest } = this.props;
       return (
         <Route
           {...rest}
           render={props => {
-            if (authenticated) {
-              return <React.Component {...props} />;
+            if (authenticated && RouteComponent) {
+              return <RouteComponent {...props} />;
             } else {
               return <Redirect to={redirectUrl} />;
             }
@@ -52,13 +52,13 @@ export default class AuthorizeRoute extends React.PureComponent<
     }
   }
 
-  async populateAuthenticationState() {
+  populateAuthenticationState = async () => {
     const authenticated = await authService.isAuthenticated();
     this.setState({ ready: true, authenticated });
-  }
+  };
 
-  async authenticationChanged() {
+  authenticationChanged = async () => {
     this.setState({ ready: false, authenticated: false });
     await this.populateAuthenticationState();
-  }
+  };
 }
